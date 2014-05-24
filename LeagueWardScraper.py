@@ -2,7 +2,7 @@ import httplib2
 import time 
 import json
 
-names = ['Windask','LightBrite','Khey','xBiscuits','Kottonbun','DragonSlayer965','aePheva']
+names = ['Windask', 'LightBrite','Khey','xBiscuits','Kottonbun','DragonSlayer965','aePheva']
 
 #API supports up to 40 summoner GETs at a time. Maybe consider doing this to have less API requests
 def get_ward_count(name,apikey = "ebacf303-2d6a-4cda-b132-260e8155f0bc"):
