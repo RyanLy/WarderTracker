@@ -4,6 +4,20 @@ var server = require('http').createServer(app);
 var path = require('path');
 var fs = require('fs');
 var getOutput = require('./js/wardInformationScrapper') //provides dict of names
+var rateLimit = require('function-rate-limit');
+
+/*
+var mongoose = require( 'mongoose' );
+var Schema   = mongoose.Schema;
+ 
+var Comment = new Schema({
+    username : String,
+    content  : String,
+    created  : Date
+});
+ 
+mongoose.model( 'Comment', Comment );
+*/
 
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.static('./css'));
@@ -15,8 +29,11 @@ app.engine('.html', require('ejs').__express);
 
 var names = ['Windask','Lightbrite','Khey','xBiscuits','Kottonbun','aePheva','DragonSlayer965']
 
-playerWardInformation = getOutput(names)
+var fns = rateLimit(1,20000,function(x){
+	playerWardInformation = getOutput(x);
+});
 
+fns(names)
 
 
 app.get('/', function(req, res) {
@@ -30,7 +47,7 @@ app.get('/', function(req, res) {
  });
 
 app.get('/refresh', function(req, res) {
-	getOutput(names)
+	fns(names);
  });
 
 app.listen(process.env.PORT || 7000)

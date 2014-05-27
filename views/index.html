@@ -1,4 +1,6 @@
 <html>
+<link rel="stylesheet" type="text/css" href="./widget.css">
+<title> Ward Counts</title>
 <body>
 <style>
 body {background-image:url("./buyWard.png");
@@ -11,11 +13,22 @@ button {margin-top: 15px;}
 <%- output %>
 
 <br>
+<form action="./refresh">
+    <input type="submit" value="Refresh">
+</form>
+
+
+
+
 <h2>Sign up</h2>
 <form>
 In Game Name: <input type="text" name="username"><br>
 <button> Sign up </button>
 </form>
-
-<body>
+<br>
+Codecha Test: Are YOU human?
+<form>
+	<script type="text/javascript" src="//codecha.org/api/challenge?k=96e35ef7932b406bac95de77d1802072&skip_css"> </script>
+</form>
+</body>
 </html>
