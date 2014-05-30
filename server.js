@@ -50,6 +50,10 @@ app.get('/refresh', function(req, res) {
 	fns(names);
  });
 
+app.get('/title', function(req,res) {
+	res.render('title_page');
+});
+
 app.listen(process.env.PORT || 7000)
 
 console.log("Listening on port 7000");

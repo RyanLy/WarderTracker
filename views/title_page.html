@@ -1,0 +1,61 @@
+<style>
+.wrapper {width:58.536585%; /*960/1640 = .58536585*/ margin:0 auto;}
+.resize {width:100%; height:auto;}
+.resize2 {width:70%; height:auto;}
+.resize3 {width:50%; height:auto;}
+</style>   
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="jquery.fittext.js"></script>
+<script type="text/javascript">
+	$( document ).ready(function() {
+    resizeText();
+    console.log("HI");
+  }).trigger('resize');
+
+	$(window).bind('resize', function() {
+    resizeText();
+  }).trigger('resize');
+
+	(function($) {
+	    $.fn.onEnter = function(func) {
+	        this.bind('keypress', function(e) {
+	            if (e.keyCode == 13) func.apply(this, [e]);    
+	        });               
+	        return this; 
+	     };
+	})(jQuery);
+
+	$( function () {
+	    console.log($("input"));
+	    $("input").onEnter( function() {
+	        $(this).val("Hello World");                     
+	    });
+	});
+
+function resizeText() {
+	var preferredWidth = 1024;
+	var displayWidth = window.innerWidth;
+	var percentage = displayWidth / preferredWidth;
+	var fontsizetitle = 22;
+	var textboxsize = 28;
+	var newFontSizeTitle = Math.floor(fontsizetitle * percentage);
+	var newtextboxsize = Math.floor(textboxsize * percentage);
+	$(".search").css("font-size", newFontSizeTitle)
+	$(".search").css("height", newtextboxsize)
+}
+
+</script>
+
+
+<html>
+
+<link rel="stylesheet" type="text/css" href="./title.css">
+<title> Ward Counts</title>
+<body>
+<img id = "logo" class = "resize3" src ="./logo.png">
+<div class="container">
+	<input class="search resize2" maxlength="16" placeholder="type in a summoner name here" type = "text">
+	<img id = "background" class="resize" src ="./jaycedraven.png">
+</div>
+</body>
+</html>

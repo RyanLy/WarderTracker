@@ -1,0 +1,52 @@
+body {
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    color: #055357;
+    font-weight: 300;
+}
+
+#logo{
+	display: block;
+	margin-top:2%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.search{
+	display:block;
+	position:absolute;
+	background-color : transparent;
+	margin-top:11%;
+	margin-left:14.7%;
+	outline: 0;
+	border: 0px none;
+	border-width: none;
+	border-color:#055357;
+	height:50px;
+	text-align:center;
+	color: #333231;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #808483;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #808483;
+    opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #808483;
+    opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #808483;
+}
+input:focus::-webkit-input-placeholder { color:transparent; }
+input:focus:-moz-placeholder { color:transparent; }
+
+
+.container{
+	background-color: #000;
+	width:100%;
+}
+
