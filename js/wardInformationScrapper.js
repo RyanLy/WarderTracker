@@ -1,25 +1,35 @@
 var http = require('http');
-var rateLimit = require('function-rate-limit');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/27010')
+  , Schema = mongoose.Schema;
+  var rateLimit = require('function-rate-limit');
 
-var getOutput = function getOutput(names){
+var summonerSchema = new Schema({
+    name:  String,
+    lowercase: String,
+    wards: Number,
+    sightWardsBought: Number
+});
+var Summoner = mongoose.model('Summoner', summonerSchema)
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+  console.log("SUCCESSDB");
+});
+
+var getOutput = function getOutput(name){
 	var jsonOutput = {};
 
-	for (name in names){
-		jsonOutput[names[name].toLowerCase()] = 0
-	}
-		
-	var fn = rateLimit(2,5000,function(x){
+	var fn = rateLimit(2,1000,function(x){
 		jsonParse(x);
 	});
 
-	for (name in names){
-		fn(names[name.toLowerCase()]);
-	}
+	jsonParse(name)
 
 	function jsonParse(name){
 		var apikey= "ebacf303-2d6a-4cda-b132-260e8155f0bc"
-		var url = 'http://prod.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name + "?api_key=" + apikey;
-		console.log(name)
+		var url = 'http://prod.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name.toLowerCase() + "?api_key=" + apikey;
 
 		output = ""
 
@@ -29,14 +39,14 @@ var getOutput = function getOutput(names){
 		        body += chunk;
 		    });
 		    res.on('end', function() {
-		        var summonerInfo = JSON.parse(body)
-		        try{
+		    	try{
+		       		var summonerInfo = JSON.parse(body)
 		        	var summoner_id = summonerInfo[name.toLowerCase()]['id'];
 		    	}
 		        catch (e){
-					console.log("Error Caught");
+					console.log("Error Caught: Bad summoner name");
+					return
 				}
-		        console.log(summoner_id);
 		        getWards(summoner_id,name,apikey);
 		    });
 		}).on('error', function(e) {
@@ -54,7 +64,13 @@ var getOutput = function getOutput(names){
 			        body += chunk;
 			    });
 			    res.on('end', function() {
-			        var summonerGamesInfo = JSON.parse(body)
+			    	try{
+			        	var summonerGamesInfo = JSON.parse(body)
+			        }
+			        catch(e){
+			        	console.log("Does not exist")
+			        	return
+			        }
 			        //console.log(summonerGamesInfo)
 			        wards = 0
 			        sightWardsBought = 0
@@ -67,16 +83,29 @@ var getOutput = function getOutput(names){
 				        	}
 				        	if (!isNaN(temp)){
 				        		sightWardsBought += temp
-				        	} 
-
+				        	}
 				    	}
 				        catch (e){
-							console.log("Error Caught");
+							console.log("Error Caught: No Recent History");
 						}
 					}
 					console.log(wards)
-					jsonOutput[name.toLowerCase()] = "Wards placed: " + wards
-					jsonOutput[name.toLowerCase()] += ", Sightwards bought in ten games: " + sightWardsBought
+					var summoners = new Summoner({ name: name, lowercase: name.toLowerCase(), wards: wards, sightWardsBought: sightWardsBought});
+					Summoner.find({lowercase: name.toLowerCase()}, function (err, summoner) {
+						if (err) return console.error(err);
+						if (!summoner.length){
+							summoners.save(function (err, summoner) {
+							console.log("SUCCESSSAVE")
+							});
+						}
+						else{
+							summoners.update(function (err, summoner) {
+							console.log("SUCCESSUPDATE")
+							});
+						}
+					})
+
+
 			    });
 			}).on('error', function(e) {
 			      console.log("Got error: ", e);

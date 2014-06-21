@@ -4,6 +4,8 @@ body {
     font-weight: 300;
 }
 
+a:visited {color:#000293;}
+
 #logo{
 	display: block;
 	margin-top:2%;
@@ -50,3 +52,22 @@ input:focus:-moz-placeholder { color:transparent; }
 	width:100%;
 }
 
+table {
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+td {
+
+}
+
+th,td
+{
+	padding:4px;
+    border: 1px solid #333;
+
+
+}
