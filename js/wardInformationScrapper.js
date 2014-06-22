@@ -16,7 +16,7 @@ mongoose.connect(uristring, function (err, res) {
 })
   , Schema = mongoose.Schema;
 
-  
+
 var rateLimit = require('function-rate-limit');
 
 var summonerSchema = new Schema({
@@ -119,8 +119,8 @@ var getOutput = function getOutput(name){
 							});
 						}
 						else{
-							summoners.update(function (err, summoner) {
-							console.log("SUCCESSUPDATE")
+							Summoner.update({lowercase: name.toLowerCase()}, { wards: wards, sightWardsBought: sightWardsBought}, function (err, summoner) {
+								console.log("SUCCESSUPDATE");
 							});
 						}
 					})
