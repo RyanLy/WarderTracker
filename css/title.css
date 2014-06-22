@@ -71,3 +71,10 @@ th,td
 
 
 }
+.odd{
+	background-color: #E2E0E0
+}
+
+.even{
+	background-color: #FFF
+}

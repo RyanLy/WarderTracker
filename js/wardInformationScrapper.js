@@ -1,8 +1,23 @@
 var http = require('http');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/27010')
+
+var uristring =
+process.env.MONGOLAB_URI ||
+process.env.MONGOHQ_URL ||
+'mongodb://localhost/';
+
+
+mongoose.connect(uristring, function (err, res) {
+  if (err) {
+  console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+  } else {
+  console.log ('Succeeded connected to: ' + uristring);
+  }
+})
   , Schema = mongoose.Schema;
-  var rateLimit = require('function-rate-limit');
+
+  
+var rateLimit = require('function-rate-limit');
 
 var summonerSchema = new Schema({
     name:  String,
@@ -40,12 +55,17 @@ var getOutput = function getOutput(name){
 		    });
 		    res.on('end', function() {
 		    	try{
-		       		var summonerInfo = JSON.parse(body)
-		        	var summoner_id = summonerInfo[name.toLowerCase()]['id'];
+		       		var summonerInfo = JSON.parse(body);
+		       		console.log(summonerInfo);
+		       		lowerName = name.replace(/\s+/g, '');
+		       		console.log(lowerName)
+		        	var summoner_id = summonerInfo[lowerName.toLowerCase()]['id'];
+		        	name = summonerInfo[lowerName.toLowerCase()]['name'];
+
 		    	}
 		        catch (e){
 					console.log("Error Caught: Bad summoner name");
-					return
+					return false;
 				}
 		        getWards(summoner_id,name,apikey);
 		    });
@@ -69,7 +89,7 @@ var getOutput = function getOutput(name){
 			        }
 			        catch(e){
 			        	console.log("Does not exist")
-			        	return
+			        	return false;
 			        }
 			        //console.log(summonerGamesInfo)
 			        wards = 0
@@ -104,7 +124,6 @@ var getOutput = function getOutput(name){
 							});
 						}
 					})
-
 
 			    });
 			}).on('error', function(e) {

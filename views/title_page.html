@@ -4,16 +4,28 @@
 .resize2 {width:70%; height:auto;}
 .resize3 {width:50%; height:auto;}
 </style>  
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="jquery.js"></script>
 <script src="jquery.fittext.js"></script>
 <script src="angular.js"></script>
 <script src="controllers.js"></script>
 
 
 <script type="text/javascript">
-	function foo() {
-    // Do something.
-	}
+
+	$(document).ready(function(){
+		$("#myform").submit(function(e) {
+		    e.preventDefault();
+		    name = $("#inputBox").val();
+			if (name != ''){
+			    $('html,body').animate({scrollTop: $(document).height() + "px"});
+			    action = '/request?name=' + name
+			    console.log(action)
+				$.post( action, function( data ) {
+				});
+				$("#inputBox").val('');
+			}
+		});
+	});
 
 	$( document ).ready(function() {
     resizeText();
@@ -22,25 +34,6 @@
 	$(window).bind('resize', function() {
     resizeText();
   }).trigger('resize');
-
-	(function($) {
-	    $.fn.onEnter = function(func) {
-	        this.bind('keypress', function(e) {
-	            if (e.keyCode == 13) func.apply(this, [e]);    
-	        });               
-	        return this; 
-	     };
-	})(jQuery);
-
-	$( function () {
-	    $("input").onEnter( function() {
-	    	name = $("input").val(); 
-	    	$('html,body').animate({scrollTop: $(document).height() + "px"});
-	        $('#myform').attr('action', '/request?name=' + name);
-	        $("body").jsPanel();                     
-	    });
-	});
-
 
 function resizeText() {
 	var preferredWidth = 1024;
@@ -59,12 +52,12 @@ function resizeText() {
 <html ng-app="summonerWards" ng-controller="summonerWardsCtrl">
 
 <link rel="stylesheet" type="text/css" href="./title.css">
-<title> Ward Counts - {{query}}</title>
+<title> Ward Counts </title>
 <body>
 <img id = "logo" class = "resize3" src ="./logo.png">
 <div class="container">
-	<form id = "myform" action="/request" method="post" name = "this_form">
-	<input ng-model="query" class="search resize2" maxlength="16" placeholder="type in a summoner name here" type = "text" name="name" autocomplete="off">
+	<form id="myform" action= "" method="post">
+		<input ng-model="query" id = "inputBox" class="search resize2" maxlength="16" placeholder="type in a summoner name here" type = "text" name="name" autocomplete="off">
 	</form>
 	<img id = "background" class="resize" src ="./jaycedraven.png">
 </div>
@@ -79,8 +72,8 @@ Filter by summoner name:<input ng-model="names">
 		<td><a href="" ng-click="predicate = 'sightWardsBought'; reverse=!reverse">Sight Wards</a></td>
 	</tr>
 </table>
-<table>
-	<tr ng-repeat="summoner in summoners | filter:names | orderBy:predicate:reverse">
+<table id = "summonerInfo">
+	<tr ng-repeat="summoner in summoners | filter:names | orderBy:predicate:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
 		<td>{{summoner.name}}</td>
 		<td>{{summoner.wards}}</td>
 		<td>{{summoner.sightWardsBought}}</td>
