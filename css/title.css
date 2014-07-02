@@ -60,14 +60,16 @@ table {
     margin-right: auto;
 }
 
-td {
-
-}
 
 th,td
 {
 	padding:4px;
     border: 1px solid #333;
+}
+
+.content:hover {
+     background-color: #F29A4D;
+}
 
 
 }

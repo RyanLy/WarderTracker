@@ -71,7 +71,7 @@ app.post('/request', function(req, res) {
 		    res.send("Summoner: " + callback[0] + ", Wards: " + callback[1])
 		},
 		function (err){
-			res.send(err)
+			res.send(405, err);
 		}
 	);
 });
