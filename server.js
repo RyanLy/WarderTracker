@@ -7,6 +7,7 @@ var http = require('http');
 
 var getOutput = require('./js/wardInformationScrapper') //provides dict of names
 var rateLimit = require('function-rate-limit');
+var nodemailer = require("nodemailer");
 
 var uristring =
 process.env.MONGOLAB_URI ||
@@ -64,6 +65,15 @@ app.get('/clearDB', function(req,res) {
 
 
 app.post('/request', function(req, res) {
+	var ipAddr = req.headers["x-forwarded-for"];
+	if (ipAddr){
+	    var list = ipAddr.split(",");
+	    ipAddr = list[list.length-1];
+	  } else {
+	    ipAddr = req.connection.remoteAddress;
+	  }
+	console.log(ipAddr)
+
 	summonerName = req.param('name');
 	console.log(summonerName);
 	getOutput(summonerName)(
@@ -74,6 +84,36 @@ app.post('/request', function(req, res) {
 			res.send(405, err);
 		}
 	);
+	var smtpTransport = nodemailer.createTransport("SMTP",{
+	    service: "Gmail",
+	    auth: {
+	        user: "ryanwardapp@gmail.com",
+	        pass: "LeagueWard1"
+	    }
+	});
+
+	// setup e-mail data with unicode symbols
+	var mailOptions = {
+	    from: "Wards<ryanwardapp@gmail.com>", // sender address
+	    to: "ryanwardapp@gmail.com", // list of receivers
+	    subject: "Information", // Subject line
+	    text: ipAddr + " requested for Summoner: " + summonerName, // plaintext body
+	    html: ipAddr + " requested for Summoner: " + summonerName // html body
+	}
+
+	// send mail with defined transport object
+	smtpTransport.sendMail(mailOptions, function(error, response){
+	    if(error){
+	        console.log(error);
+	    }else{
+	        console.log("Message sent: " + response.message);
+	    }
+
+	    // if you don't want to use this transport object anymore, uncomment following line
+	    //smtpTransport.close(); // shut down the connection pool, no more messages
+	});
+
+
 });
 
 app.listen(process.env.PORT || 7000)
