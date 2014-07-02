@@ -33,20 +33,27 @@ db.once('open', function callback () {
   console.log("SUCCESSDB");
 });
 
-var getOutput = function getOutput(name){
+var getOutput = function getOutput(name){ return function(callback, err) {
 	var jsonOutput = {};
 
 	var fn = rateLimit(2,1000,function(x){
 		jsonParse(x);
 	});
 
-	jsonParse(name)
+	jsonParse(name)(
+		function(callback2){
+			callback(callback2)
+		},
+		function(err2){
+			err(err2)
+		}
+	);
 
-	function jsonParse(name){
+}}
+
+function jsonParse(name){ return function(callback2, err2){
 		var apikey= "ebacf303-2d6a-4cda-b132-260e8155f0bc"
 		var url = 'http://prod.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name.toLowerCase() + "?api_key=" + apikey;
-
-		output = ""
 
 		http.get(url, function(res) {
 		    var body = '';
@@ -65,76 +72,88 @@ var getOutput = function getOutput(name){
 		    	}
 		        catch (e){
 					console.log("Error Caught: Bad summoner name");
-					return false;
+					err2("Bad summoner name: Please try again.");
+					return false
 				}
-		        getWards(summoner_id,name,apikey);
+				getWards(summoner_id,name,apikey)(
+					function(callback3){
+						callback2(callback3)
+					},
+					function(err3){
+						err2(err3)
+					}
+				);
 		    });
 		}).on('error', function(e) {
 		      console.log("Got error: ", e);
 		});
+}}
 
-	}
-
-	function getWards(summoner_id,name,apikey){
-		var url = "http://prod.api.pvp.net/api/lol/na/v1.3/game/by-summoner/" + summoner_id + "/recent?api_key=" + apikey
-		try{
-			http.get(url, function(res) {
-			    var body = '';
-			    res.on('data', function(chunk) {
-			        body += chunk;
-			    });
-			    res.on('end', function() {
-			    	try{
-			        	var summonerGamesInfo = JSON.parse(body)
-			        }
-			        catch(e){
-			        	console.log("Does not exist")
-			        	return false;
-			        }
-			        //console.log(summonerGamesInfo)
-			        wards = 0
-			        sightWardsBought = 0
-					for (game in summonerGamesInfo.games){
-						try{
-				        	tempWardsPlaced = summonerGamesInfo['games'][game]['stats']['wardPlaced']
-				        	temp = summonerGamesInfo['games'][game]['stats']['sightWardsBought']
-				        	if (!isNaN(tempWardsPlaced)){
-				     			wards += tempWardsPlaced
-				        	}
-				        	if (!isNaN(temp)){
-				        		sightWardsBought += temp
-				        	}
-				    	}
-				        catch (e){
-							console.log("Error Caught: No Recent History");
-						}
+function getWards(summoner_id,name,apikey){ return function(callback3, err3){
+	var url = "http://prod.api.pvp.net/api/lol/na/v1.3/game/by-summoner/" + summoner_id + "/recent?api_key=" + apikey
+	try{
+		http.get(url, function(res) {
+		    var body = '';
+		    res.on('data', function(chunk) {
+		        body += chunk;
+		    });
+		    res.on('end', function() {
+		    	try{
+		        	var summonerGamesInfo = JSON.parse(body)
+		        }
+		        catch(e){
+		        	console.log("Does not exist")
+		        	err3("Summoner information does not exist.  Please try again.")
+		        	return false
+		        }
+		        //console.log(summonerGamesInfo)
+		        wards = 0
+		        sightWardsBought = 0
+				for (game in summonerGamesInfo.games){
+					try{
+			        	tempWardsPlaced = summonerGamesInfo['games'][game]['stats']['wardPlaced']
+			        	temp = summonerGamesInfo['games'][game]['stats']['sightWardsBought']
+			        	if (!isNaN(tempWardsPlaced)){
+			     			wards += tempWardsPlaced
+			        	}
+			        	if (!isNaN(temp)){
+			        		sightWardsBought += temp
+			        	}
+			    	}
+			        catch (e){
+						console.log("Error Caught: No Recent History");
+						err3("Summoner history does not exist.  Please try again.")
+						return false
 					}
-					console.log(wards)
-					var summoners = new Summoner({ name: name, lowercase: name.toLowerCase(), wards: wards, sightWardsBought: sightWardsBought});
-					Summoner.find({lowercase: name.toLowerCase()}, function (err, summoner) {
-						if (err) return console.error(err);
-						if (!summoner.length){
-							summoners.save(function (err, summoner) {
-							console.log("SUCCESSSAVE")
-							});
-						}
-						else{
-							Summoner.update({lowercase: name.toLowerCase()}, { wards: wards, sightWardsBought: sightWardsBought}, function (err, summoner) {
-								console.log("SUCCESSUPDATE");
-							});
-						}
-					})
+				}
+				console.log(wards)
+				var summoners = new Summoner({ name: name, lowercase: name.toLowerCase(), wards: wards, sightWardsBought: sightWardsBought});
+				Summoner.find({lowercase: name.toLowerCase()}, function (err, summoner) {
+					if (err) return console.error(err);
+					if (!summoner.length){
+						summoners.save(function (err, summoner) {
+						console.log("SUCCESSSAVE")
+						});
+					}
+					else{
+						Summoner.update({lowercase: name.toLowerCase()}, { wards: wards, sightWardsBought: sightWardsBought}, function (err, summoner) {
+							console.log("SUCCESSUPDATE");
+						});
+					}
+				})
+				var name_ward = new Array();
+				name_ward[0] = name
+				name_ward[1] = wards
+				callback3(name_ward)
 
-			    });
-			}).on('error', function(e) {
-			      console.log("Got error: ", e);
-			});
-		}
-		catch (e){
-			console.log("Error Caught")
-		}
+		    });
+		}).on('error', function(e) {
+		      console.log("Got error: ", e);
+		});
 	}
-	return jsonOutput
-}
+	catch (e){
+		console.log("Error Caught")
+	}
+}}
 
 module.exports = getOutput

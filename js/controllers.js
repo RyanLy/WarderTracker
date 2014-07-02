@@ -10,6 +10,7 @@ summonerWards.controller('summonerWardsCtrl', function($scope, $http, $filter) {
 	}
 	$scope.predicate = '-wards';
 	$scope.getData()
-	setInterval($scope.getData, 2000);
 
+	setInterval($scope.getData, 60000);
 });
+

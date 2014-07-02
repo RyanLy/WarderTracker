@@ -20,8 +20,21 @@
 			    $('html,body').animate({scrollTop: $(document).height() + "px"});
 			    action = '/request?name=' + name
 			    console.log(action)
-				$.post( action, function( data ) {
-				});
+			    $.ajax({
+	               type: "POST",
+	               url: action,
+	               success: function( data ){
+	                   alert(data);
+	                   d = document.getElementById('summonerInfo');
+	                   scope = angular.element(d).scope();
+	                   scope.$apply(function() {
+					        scope.getData();
+					    });
+	               },
+	               error: function(msg){
+	                alert("error " + msg);
+	               }
+	             });
 				$("#inputBox").val('');
 			}
 		});

@@ -3,6 +3,7 @@ var app  = express();
 var server = require('http').createServer(app);
 var path = require('path');
 var fs = require('fs');
+var http = require('http');
 
 var getOutput = require('./js/wardInformationScrapper') //provides dict of names
 var rateLimit = require('function-rate-limit');
@@ -21,9 +22,6 @@ mongoose.connect(uristring, function (err, res) {
   }
 })
   , Schema = mongoose.Schema;
-
-
-
 
 var rateLimit = require('function-rate-limit');
 
@@ -68,9 +66,14 @@ app.get('/clearDB', function(req,res) {
 app.post('/request', function(req, res) {
 	summonerName = req.param('name');
 	console.log(summonerName);
-	getOutput(summonerName);
-
-
+	getOutput(summonerName)(
+		function (callback) {
+		    res.send("Summoner: " + callback[0] + ", Wards: " + callback[1])
+		},
+		function (err){
+			res.send(err)
+		}
+	);
 });
 
 app.listen(process.env.PORT || 7000)
