@@ -48,7 +48,6 @@ var getOutput = function getOutput(name){ return function(callback, err) {
 			err(err2)
 		}
 	);
-
 }}
 
 function jsonParse(name){ return function(callback2, err2){
@@ -71,8 +70,17 @@ function jsonParse(name){ return function(callback2, err2){
 
 		    	}
 		        catch (e){
-					console.log("Error Caught: Bad summoner name");
-					err2("Bad summoner name: Please try again.");
+					if (res.statusCode == 404) {
+						console.log("Error Caught: Bad summoner name");
+						err2("Bad summoner name: Please try again.");
+					}
+					else if (res.statusCode == 429) {
+						console.log("Rate limit reached.  Please try again.");
+						err2("Rate limit reached.  Please try again.");
+					}
+					else{
+						err2("Please try again.");
+					}
 					return false
 				}
 				getWards(summoner_id,name,apikey)(
@@ -102,8 +110,17 @@ function getWards(summoner_id,name,apikey){ return function(callback3, err3){
 		        	var summonerGamesInfo = JSON.parse(body)
 		        }
 		        catch(e){
-		        	console.log("Does not exist")
-		        	err3("Summoner information does not exist.  Please try again.")
+		        	if (res.statusCode == 404) {
+						console.log("Summoner history does not exist.  Please try again.");
+						err3("Summoner history does not exist.  Please try again.");
+					}
+					else if (res.statusCode == 429) {
+						console.log("Rate limit reached.  Please try again.");
+						err3("Rate limit reached.  Please try again.");
+					}
+					else{
+						err3("Please try again.");
+					}
 		        	return false
 		        }
 		        //console.log(summonerGamesInfo)
@@ -121,8 +138,17 @@ function getWards(summoner_id,name,apikey){ return function(callback3, err3){
 			        	}
 			    	}
 			        catch (e){
-						console.log("Error Caught: No Recent History");
-						err3("Summoner history does not exist.  Please try again.")
+						if (res.statusCode == 404) {
+							console.log("Summoner history does not exist.  Please try again.");
+							err3("Summoner history does not exist.  Please try again.");
+						}
+						else if (res.statusCode == 429) {
+							console.log("Rate limit reached.  Please try again.");
+							err3("Rate limit reached.  Please try again.");
+						}
+						else{
+							err3("Please try again.");
+						}
 						return false
 					}
 				}
