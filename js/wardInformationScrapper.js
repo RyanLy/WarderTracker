@@ -27,6 +27,15 @@ var summonerSchema = new Schema({
 });
 var Summoner = mongoose.model('Summoner', summonerSchema)
 
+var summonerIDSchema = new Schema({
+    name:  String,
+    lowercase: String,
+    ID: String
+});
+var SummonerID = mongoose.model('SummonerID', summonerIDSchema)
+
+
+
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
@@ -52,37 +61,60 @@ var getOutput = function getOutput(name){ return function(callback, err) {
 
 function jsonParse(name){ return function(callback2, err2){
 		var apikey= "ebacf303-2d6a-4cda-b132-260e8155f0bc"
-		var url = 'http://prod.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name.toLowerCase() + "?api_key=" + apikey;
+		lowerName = name.replace(/\s+/g, '');
+		console.log(lowerName)		
+		
+		SummonerID.find({lowercase: lowerName.toLowerCase()}, function (err, summonerID) {				        	
+			if (err) return console.error(err);
+			if (!summonerID.length){
+				var url = 'http://prod.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name.toLowerCase() + "?api_key=" + apikey;		
+				http.get(url, function(res) {
+				    var body = '';
+				    res.on('data', function(chunk) {
+				        body += chunk;
+				    });
+				    res.on('end', function() {
+				    	try{
+				       		var summonerInfo = JSON.parse(body);
+				       		console.log(summonerInfo);
+				       		var summoner_id = summonerInfo[lowerName.toLowerCase()]['id'];
+				        	name = summonerInfo[lowerName.toLowerCase()]['name'];
 
-		http.get(url, function(res) {
-		    var body = '';
-		    res.on('data', function(chunk) {
-		        body += chunk;
-		    });
-		    res.on('end', function() {
-		    	try{
-		       		var summonerInfo = JSON.parse(body);
-		       		console.log(summonerInfo);
-		       		lowerName = name.replace(/\s+/g, '');
-		       		console.log(lowerName)
-		        	var summoner_id = summonerInfo[lowerName.toLowerCase()]['id'];
-		        	name = summonerInfo[lowerName.toLowerCase()]['name'];
-
-		    	}
-		        catch (e){
-					if (res.statusCode == 404) {
-						console.log("Error Caught: Bad summoner name");
-						err2("Bad summoner name: Please try again.");
-					}
-					else if (res.statusCode == 429) {
-						console.log("Rate limit reached.  Please try again.");
-						err2("Rate limit reached.  Please try again.");
-					}
-					else{
-						err2("Please try again.");
-					}
-					return false
-				}
+				    	}
+				        catch (e){
+							if (res.statusCode == 404) {
+								console.log("Error Caught: Bad summoner name");
+								err2("Bad summoner name: Please try again.");
+							}
+							else if (res.statusCode == 429) {
+								console.log("Rate limit reached.  Please try again.");
+								err2("Rate limit reached.  Please try again.");
+							}
+							else{
+								err2("Please try again.");
+							}
+							return false
+						}
+						var summonerIDs = new SummonerID({ name: name, lowercase: name.toLowerCase(), ID : summoner_id});
+						summonerIDs.save(function (err, summonerID) {
+							console.log("SUCCESSSAVE")
+						});
+						getWards(summoner_id,name,apikey)(
+							function(callback3){
+								callback2(callback3)
+							},
+							function(err3){
+								err2(err3)
+							}
+						);
+				    });
+				}).on('error', function(e) {
+				      console.log("Got error: ", e);
+				});
+			}
+			else{
+				name = summonerID[0]['name']
+				summoner_id = summonerID[0]['ID']
 				getWards(summoner_id,name,apikey)(
 					function(callback3){
 						callback2(callback3)
@@ -91,10 +123,8 @@ function jsonParse(name){ return function(callback2, err2){
 						err2(err3)
 					}
 				);
-		    });
-		}).on('error', function(e) {
-		      console.log("Got error: ", e);
-		});
+			}
+	})
 }}
 
 function getWards(summoner_id,name,apikey){ return function(callback3, err3){

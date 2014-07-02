@@ -34,6 +34,13 @@ var summonerSchema = new Schema({
 });
 var Summoner = mongoose.model('Summoners', summonerSchema)
 
+var requestSchema = new Schema({
+    IP:  String,
+    time: String,
+});
+var queryRequest = mongoose.model('queryRequests', requestSchema)
+
+
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.static('./css'));
 app.use(express.static('./js'));
@@ -65,15 +72,6 @@ app.get('/clearDB', function(req,res) {
 
 
 app.post('/request', function(req, res) {
-	var ipAddr = req.headers["x-forwarded-for"];
-	if (ipAddr){
-	    var list = ipAddr.split(",");
-	    ipAddr = list[list.length-1];
-	  } else {
-	    ipAddr = req.connection.remoteAddress;
-	  }
-	console.log(ipAddr)
-
 	summonerName = req.param('name');
 	console.log(summonerName);
 	getOutput(summonerName)(
@@ -84,6 +82,24 @@ app.post('/request', function(req, res) {
 			res.send(405, err);
 		}
 	);
+
+	var ipAddr = req.headers["x-forwarded-for"];
+	if (ipAddr){
+	    var list = ipAddr.split(",");
+	    ipAddr = list[list.length-1];
+	  } else {
+	    ipAddr = req.connection.remoteAddress;
+	  }
+	console.log(ipAddr)
+
+	var date = new Date();
+	console.log(date)
+	var queryRequests = new queryRequest({IP : ipAddr, time : date});
+	queryRequests.save(function (err, queryRequest) {
+		console.log("request logged")
+	});			
+
+
 	var smtpTransport = nodemailer.createTransport("SMTP",{
 	    service: "Gmail",
 	    auth: {
