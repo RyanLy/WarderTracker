@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 
 var uristring =
 process.env.MONGOLAB_URI ||
-process.env.MONGOHQ_URL ||
 'mongodb://localhost/';
 
 
@@ -43,7 +42,6 @@ db.once('open', function callback () {
 });
 
 var getOutput = function getOutput(name){ return function(callback, err) {
-	var jsonOutput = {};
 
 	var fn = rateLimit(2,1000,function(x){
 		jsonParse(x);

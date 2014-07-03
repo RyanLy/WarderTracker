@@ -9,9 +9,17 @@ var getOutput = require('./js/wardInformationScrapper') //provides dict of names
 var rateLimit = require('function-rate-limit');
 var nodemailer = require("nodemailer");
 
+
+var smtpTransport = nodemailer.createTransport("SMTP",{
+    service: "Gmail",
+    auth: {
+        user: "ryanwardapp@gmail.com",
+        pass: "LeagueWard1"
+    }
+});
+
 var uristring =
 process.env.MONGOLAB_URI ||
-process.env.MONGOHQ_URL ||
 'mongodb://localhost/';
 
 var mongoose = require('mongoose');
@@ -74,14 +82,6 @@ app.get('/clearDB', function(req,res) {
 app.post('/request', function(req, res) {
 	summonerName = req.param('name');
 	console.log(summonerName);
-	getOutput(summonerName)(
-		function (callback) {
-		    res.send("Summoner: " + callback[0] + ", Wards: " + callback[1])
-		},
-		function (err){
-			res.send(405, err);
-		}
-	);
 
 	var ipAddr = req.headers["x-forwarded-for"];
 	if (ipAddr){
@@ -90,45 +90,54 @@ app.post('/request', function(req, res) {
 	  } else {
 	    ipAddr = req.connection.remoteAddress;
 	  }
-	console.log(ipAddr)
 
 	var date = new Date();
 	console.log(date)
 	var queryRequests = new queryRequest({IP : ipAddr, time : date});
-	queryRequests.save(function (err, queryRequest) {
-		console.log("request logged")
+	queryRequests
+	.save(function (err, queryRequest) {
+		console.log("Query has been logged.")
 	});			
 
+	getOutput(summonerName)(
+		function (callback) {
+		    res.send("Summoner: " + callback[0] + ", Wards: " + callback[1])
+		    summonerName = callback[0]
+		    // setup e-mail data with unicode symbols
+			var mailOptions = {
+			    from: "Wards Notifier<ryanwardapp@gmail.com>", // sender address
+			    to: "ryanwardapp@gmail.com", // list of receivers
+			    subject: "Automated Information", // Subject line
+			    text: ipAddr + " requested for Summoner: " + summonerName, // plaintext body
+			    html: ipAddr + " requested for Summoner: " + summonerName // html body
+			}
 
-	var smtpTransport = nodemailer.createTransport("SMTP",{
-	    service: "Gmail",
-	    auth: {
-	        user: "ryanwardapp@gmail.com",
-	        pass: "LeagueWard1"
-	    }
-	});
-
-	// setup e-mail data with unicode symbols
-	var mailOptions = {
-	    from: "Wards<ryanwardapp@gmail.com>", // sender address
-	    to: "ryanwardapp@gmail.com", // list of receivers
-	    subject: "Information", // Subject line
-	    text: ipAddr + " requested for Summoner: " + summonerName, // plaintext body
-	    html: ipAddr + " requested for Summoner: " + summonerName // html body
-	}
-
-	// send mail with defined transport object
-	smtpTransport.sendMail(mailOptions, function(error, response){
-	    if(error){
-	        console.log(error);
-	    }else{
-	        console.log("Message sent: " + response.message);
-	    }
-
-	    // if you don't want to use this transport object anymore, uncomment following line
-	    //smtpTransport.close(); // shut down the connection pool, no more messages
-	});
-
+			smtpTransport.sendMail(mailOptions, function(error, response){
+			    if(error){
+			        console.log(error);
+			    }else{
+			        console.log("Message sent: " + response.message);
+			    }
+			});
+		},
+		function (err){
+			res.send(405, err);
+			var mailOptions = {
+			    from: "Wards<ryanwardapp@gmail.com>", // sender address
+			    to: "ryanwardapp@gmail.com", // list of receivers
+			    subject: "Automated Information", // Subject line
+			    text: ipAddr + " requested for Summoner: " + summonerName + ".  Unfortunately it failed", // plaintext body
+			    html: ipAddr + " requested for Summoner: " + summonerName + ".  Unfortunately it failed"// html body
+			}
+			smtpTransport.sendMail(mailOptions, function(error, response){
+			    if(error){
+			        console.log(error);
+			    }else{
+			        console.log("Message sent: " + response.message);
+			    }
+			});
+		}
+	);
 
 });
 
