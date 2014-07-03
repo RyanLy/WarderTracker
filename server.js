@@ -36,6 +36,7 @@ var rateLimit = require('function-rate-limit');
 
 var summonerSchema = new Schema({
     name:  String,
+    ID: String,
     lowercase: String,
     wards: Number,
     sightWardsBought: Number

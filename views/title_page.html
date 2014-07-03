@@ -87,7 +87,7 @@ Filter by summoner name:<input ng-model="names">
 </table>
 <table id = "summonerInfo">
 	<tr class = "content" ng-repeat="summoner in summoners | filter:names | orderBy:predicate:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
-		<td>{{summoner.name}}</td>
+		<td><a ng-href="http://www.lolking.net/summoner/na/{{summoner.ID}}">{{summoner.name}}</a></td>
 		<td>{{summoner.wards}}</td>
 		<td>{{summoner.sightWardsBought}}</td>
 	</tr>

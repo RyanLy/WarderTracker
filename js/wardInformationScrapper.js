@@ -20,20 +20,12 @@ var rateLimit = require('function-rate-limit');
 
 var summonerSchema = new Schema({
     name:  String,
+    ID: String,
     lowercase: String,
     wards: Number,
     sightWardsBought: Number
 });
 var Summoner = mongoose.model('Summoner', summonerSchema)
-
-var summonerIDSchema = new Schema({
-    name:  String,
-    lowercase: String,
-    ID: String
-});
-var SummonerID = mongoose.model('SummonerID', summonerIDSchema)
-
-
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -62,7 +54,7 @@ function jsonParse(name){ return function(callback2, err2){
 		lowerName = name.replace(/\s+/g, '');
 		console.log(lowerName)		
 		
-		SummonerID.find({lowercase: lowerName.toLowerCase()}, function (err, summonerID) {				        	
+		Summoner.find({lowercase: lowerName.toLowerCase()}, function (err, summonerID) {				        	
 			if (err) return console.error(err);
 			if (!summonerID.length){
 				var url = 'http://prod.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name.toLowerCase() + "?api_key=" + apikey;		
@@ -93,10 +85,6 @@ function jsonParse(name){ return function(callback2, err2){
 							}
 							return false
 						}
-						var summonerIDs = new SummonerID({ name: name, lowercase: name.toLowerCase(), ID : summoner_id});
-						summonerIDs.save(function (err, summonerID) {
-							console.log("SUCCESSSAVE")
-						});
 						getWards(summoner_id,name,apikey)(
 							function(callback3){
 								callback2(callback3)
@@ -181,7 +169,7 @@ function getWards(summoner_id,name,apikey){ return function(callback3, err3){
 					}
 				}
 				console.log(wards)
-				var summoners = new Summoner({ name: name, lowercase: name.toLowerCase(), wards: wards, sightWardsBought: sightWardsBought});
+				var summoners = new Summoner({ name: name, ID: summoner_id, lowercase: name.toLowerCase(), wards: wards, sightWardsBought: sightWardsBought});
 				Summoner.find({lowercase: name.toLowerCase()}, function (err, summoner) {
 					if (err) return console.error(err);
 					if (!summoner.length){

@@ -60,6 +60,18 @@ table {
     margin-right: auto;
 }
 
+a:link{
+	color: #055357;
+	text-decoration: none;
+}
+
+a:visited {
+    color: #055357;
+}
+
+a:hover {
+    color: #000;
+}
 
 th,td
 {
