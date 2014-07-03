@@ -96,14 +96,13 @@ app.post('/request', function(req, res) {
 	var date = new Date();
 	console.log(date)
 	var queryRequests = new queryRequest({IP : ipAddr, name : summonerName, time : date});
-	queryRequests
-	.save(function (err, queryRequest) {
+	queryRequests.save(function (err, queryRequest) {
 		console.log("Query has been logged.")
 	});			
 
 	getOutput(summonerName)(
 		function (callback) {
-		    res.send("Summoner: " + callback[0] + ", Wards: " + callback[1])
+		    res.send(callback)
 		    summonerName = callback[0]
 		    // setup e-mail data with unicode symbols
 			var mailOptions = {
@@ -113,7 +112,7 @@ app.post('/request', function(req, res) {
 			    text: ipAddr + " requested for Summoner: " + summonerName, // plaintext body
 			    html: ipAddr + " requested for Summoner: " + summonerName // html body
 			}
-
+			
 			smtpTransport.sendMail(mailOptions, function(error, response){
 			    if(error){
 			        console.log(error);
@@ -121,6 +120,7 @@ app.post('/request', function(req, res) {
 			        console.log("Message sent: " + response.message);
 			    }
 			});
+			
 		},
 		function (err){
 			res.send(405, err);

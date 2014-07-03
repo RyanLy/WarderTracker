@@ -17,24 +17,37 @@
 		    e.preventDefault();
 		    name = $("#inputBox").val();
 			if (name != ''){
-			    $('html,body').animate({scrollTop: $(document).height() + "px"});
 			    action = '/request?name=' + name
 			    console.log(action)
 			    $.ajax({
 	               type: "POST",
 	               url: action,
 	               success: function( data ){
-	                   alert(data);
+	                   //alert(data);
 	                   d = document.getElementById('summonerInfo');
 	                   scope = angular.element(d).scope();
 	                   scope.$apply(function() {
 					        scope.getData();
 					    });
+	                   $('#summonerName').text(data[0])
+	                   $('#wardNumbers').text(data[1])
+	                   $( "#summonerName" ).slideDown( "slow", function() {
+						    // Animation complete
+						    $('html,body').animate({scrollTop: $(document).height() + "px"});
+						  });
+	                   $( "#wardName" ).slideDown( "slow", function() {
+						    // Animation complete
+						  });
+	                   $( "#wardNumbers" ).slideDown( "slow", function() {
+						    // Animation complete
+						  });
+
 	               },
 	               error: function(err){
 	                alert(err.responseText);
 	               }
 	             });
+
 				$("#inputBox").val('');
 			}
 		});
@@ -47,6 +60,12 @@
 	$(window).bind('resize', function() {
     resizeText();
   }).trigger('resize');
+
+	$( document ).ready(function() {
+		$('#summonerInfo').on('click', 'tr', function(event) {
+		    $(this).addClass('highlight').siblings().removeClass('highlight');
+		});
+	});
 
 function resizeText() {
 	var preferredWidth = 1024;
@@ -74,6 +93,16 @@ function resizeText() {
 	</form>
 	<img id = "background" class="resize" src ="./jaycedraven.png">
 </div>
+
+<div id = "output">
+
+<a id = "summonerName"> Windask </a>
+<br>
+<a id = "wardName"> Wards: </a>
+<a id = "wardNumbers"> 120 </a>
+
+</div>
+
 <br>
 Filter by summoner name:<input ng-model="names">
 <br>

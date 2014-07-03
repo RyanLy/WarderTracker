@@ -92,3 +92,44 @@ th,td
 .even{
 	background-color: #FFF
 }
+
+.highlight{
+	background-color: #F29A4D;
+}
+
+
+#summonerName{
+	color:#000;
+	font-size:4.5em;
+	margin-left:35%;
+	text-align: center;
+	display:none;
+}
+
+#wardName{
+	font-size:2em;
+	color:#000;
+	margin-left:45%;
+	display:none;
+
+}
+
+#sightWardName{
+	font-size:2em;
+	color:#000;
+
+}
+
+
+#wardNumbers{
+	font-size:6em;
+	color:#000;
+	display:none;
+
+}
+
+#sightWardNumbers{
+	font-size:3em;
+	color:#000;
+}
+
