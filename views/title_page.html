@@ -23,7 +23,9 @@
 	               type: "POST",
 	               url: action,
 	               success: function( data ){
-	                   //alert(data);
+	                   $('#summonerName').hide()
+	                   $('#wardName').hide()
+	                   $('#wardNumbers').hide()
 	                   d = document.getElementById('summonerInfo');
 	                   scope = angular.element(d).scope();
 	                   scope.$apply(function() {
@@ -32,14 +34,11 @@
 	                   $('#summonerName').text(data[0])
 	                   $('#wardNumbers').text(data[1])
 	                   $( "#summonerName" ).slideDown( "slow", function() {
-						    // Animation complete
-						    $('html,body').animate({scrollTop: $(document).height() + "px"});
 						  });
 	                   $( "#wardName" ).slideDown( "slow", function() {
-						    // Animation complete
 						  });
 	                   $( "#wardNumbers" ).slideDown( "slow", function() {
-						    // Animation complete
+						    $('html,body').animate({scrollTop: $(document).height() + "px"});
 						  });
 
 	               },
