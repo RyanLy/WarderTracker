@@ -2,54 +2,11 @@ var express = require('express');
 var app  = express();
 var server = require('http').createServer(app);
 var path = require('path');
-var fs = require('fs');
 var http = require('http');
 
 var getOutput = require('./js/wardInformationScrapper') //provides dict of names
-var rateLimit = require('function-rate-limit');
-var nodemailer = require("nodemailer");
-
-
-var smtpTransport = nodemailer.createTransport("SMTP",{
-    service: "Gmail",
-    auth: {
-        user: "ryanwardapp@gmail.com",
-        pass: "LeagueWard1"
-    }
-});
-
-var uristring =
-process.env.MONGOLAB_URI ||
-'mongodb://localhost/';
-
-var mongoose = require('mongoose');
-mongoose.connect(uristring, function (err, res) {
-  if (err) {
-  console.log ('ERROR connecting to: ' + uristring + '. ' + err);
-  } else {
-  console.log ('Succeeded connected to: ' + uristring);
-  }
-})
-  , Schema = mongoose.Schema;
-
-var rateLimit = require('function-rate-limit');
-
-var summonerSchema = new Schema({
-    name:  String,
-    ID: String,
-    lowercase: String,
-    wards: Number,
-    sightWardsBought: Number
-});
-var Summoner = mongoose.model('Summoners', summonerSchema)
-
-var requestSchema = new Schema({
-    IP:  String,
-    name: String,
-    time: String
-});
-var queryRequest = mongoose.model('queryRequests', requestSchema)
-
+var smtpTransport = require("./js/mailer");
+var db = require('./js/database')
 
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.static('./css'));
@@ -57,10 +14,6 @@ app.use(express.static('./js'));
 app.set('view engine', 'html');
 
 app.engine('.html', require('ejs').__express);
-
-var fns = rateLimit(1,20000,function(x){
-	playerWardInformation = getOutput(x);
-});
 
 app.get('/summoners.json', function(req, res) {
   Summoner.find(function (err, summoner) {
@@ -113,6 +66,7 @@ app.post('/request', function(req, res) {
 			    html: ipAddr + " requested for Summoner: " + summonerName // html body
 			}
 			
+			
 			smtpTransport.sendMail(mailOptions, function(error, response){
 			    if(error){
 			        console.log(error);
@@ -120,7 +74,7 @@ app.post('/request', function(req, res) {
 			        console.log("Message sent: " + response.message);
 			    }
 			});
-
+			
 			
 		},
 		function (err){

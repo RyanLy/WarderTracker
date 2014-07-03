@@ -1,55 +1,7 @@
 var http = require('http');
-var mongoose = require('mongoose');
+var db = require('./database.js')
 
-var uristring =
-process.env.MONGOLAB_URI ||
-'mongodb://localhost/';
-
-
-mongoose.connect(uristring, function (err, res) {
-  if (err) {
-  console.log ('ERROR connecting to: ' + uristring + '. ' + err);
-  } else {
-  console.log ('Succeeded connected to: ' + uristring);
-  }
-})
-  , Schema = mongoose.Schema;
-
-
-var rateLimit = require('function-rate-limit');
-
-var summonerSchema = new Schema({
-    name:  String,
-    ID: String,
-    lowercase: String,
-    wards: Number,
-    sightWardsBought: Number
-});
-var Summoner = mongoose.model('Summoner', summonerSchema)
-
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback () {
-  console.log("SUCCESSDB");
-});
-
-var getOutput = function getOutput(name){ return function(callback, err) {
-
-	var fn = rateLimit(2,1000,function(x){
-		jsonParse(x);
-	});
-
-	jsonParse(name)(
-		function(callback2){
-			callback(callback2)
-		},
-		function(err2){
-			err(err2)
-		}
-	);
-}}
-
-function jsonParse(name){ return function(callback2, err2){
+function getOutput(name){ return function(callback2, err2){
 		var apikey= "ebacf303-2d6a-4cda-b132-260e8155f0bc"
 		lowerName = name.replace(/\s+/g, '');
 		console.log(lowerName)		
