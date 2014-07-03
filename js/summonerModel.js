@@ -5,7 +5,8 @@ var summonerSchema = new Schema({
     ID: String,
     lowercase: String,
     wards: Number,
-    sightWardsBought: Number
+    sightWardsBought: Number,
+    show: Boolean
 });
 
 Summoner = module.exports = mongoose.model('Summoners', summonerSchema)

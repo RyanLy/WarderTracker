@@ -16,7 +16,7 @@ app.set('view engine', 'html');
 app.engine('.html', require('ejs').__express);
 
 app.get('/summoners.json', function(req, res) {
-  Summoner.find(function (err, summoner) {
+  Summoner.find({show: true}, function (err, summoner) {
 		if (err) return console.error(err);
 		res.send(summoner);
 	})
@@ -27,9 +27,9 @@ app.get('/', function(req,res) {
 });
 
 app.get('/clearDB', function(req,res) {
-	Summoner.find(function (err, summoner) {
-	}).remove().exec();
-	console.log("DBCleared");
+	Summoner.update({show: true}, {show: false}, function (err, summoner) {
+		console.log("DBCLEARED");
+	});
 	res.redirect('/');
 });
 
@@ -66,7 +66,7 @@ app.post('/request', function(req, res) {
 			    html: ipAddr + " requested for Summoner: " + summonerName // html body
 			}
 			
-			
+			/*
 			smtpTransport.sendMail(mailOptions, function(error, response){
 			    if(error){
 			        console.log(error);
@@ -74,7 +74,7 @@ app.post('/request', function(req, res) {
 			        console.log("Message sent: " + response.message);
 			    }
 			});
-			
+			*/
 			
 		},
 		function (err){

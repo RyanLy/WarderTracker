@@ -121,7 +121,7 @@ function getWards(summoner_id,name,apikey){ return function(callback3, err3){
 					}
 				}
 				console.log(wards)
-				var summoners = new Summoner({ name: name, ID: summoner_id, lowercase: name.toLowerCase(), wards: wards, sightWardsBought: sightWardsBought});
+				var summoners = new Summoner({ name: name, ID: summoner_id, lowercase: name.toLowerCase(), wards: wards, sightWardsBought: sightWardsBought, show: true});
 				Summoner.find({lowercase: name.toLowerCase()}, function (err, summoner) {
 					if (err) return console.error(err);
 					if (!summoner.length){
@@ -130,7 +130,7 @@ function getWards(summoner_id,name,apikey){ return function(callback3, err3){
 						});
 					}
 					else{
-						Summoner.update({lowercase: name.toLowerCase()}, { wards: wards, sightWardsBought: sightWardsBought}, function (err, summoner) {
+						Summoner.update({lowercase: name.toLowerCase()}, { wards: wards, sightWardsBought: sightWardsBought, show: true}, function (err, summoner) {
 							console.log("SUCCESSUPDATE");
 						});
 					}
