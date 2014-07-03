@@ -44,7 +44,8 @@ var Summoner = mongoose.model('Summoners', summonerSchema)
 
 var requestSchema = new Schema({
     IP:  String,
-    time: String,
+    name: String,
+    time: String
 });
 var queryRequest = mongoose.model('queryRequests', requestSchema)
 
@@ -93,7 +94,7 @@ app.post('/request', function(req, res) {
 
 	var date = new Date();
 	console.log(date)
-	var queryRequests = new queryRequest({IP : ipAddr, time : date});
+	var queryRequests = new queryRequest({IP : ipAddr, name : summonerName, time : date});
 	queryRequests
 	.save(function (err, queryRequest) {
 		console.log("Query has been logged.")
