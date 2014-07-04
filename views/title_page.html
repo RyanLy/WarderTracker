@@ -9,8 +9,6 @@
 <script src="angular.js"></script>
 <script src="controllers.js"></script>
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
-<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <script type="text/javascript">
 
 	$(document).ready(function(){
@@ -35,18 +33,35 @@
 	                   scope = angular.element(d).scope();
 	                   scope.$apply(function() {
 					        scope.getData();
+
 					    });
 	                   	$('#summonerName').text(data[0])
 	                   	$('#wardNumbers').text(data[1])
 
+	                   	num = parseInt($('#wardNumbers').text());
+	                   	console.log("HERE" + num);
+	                   	if (num < 40){
+	                   		$('#wardNumbers').css('color', '#FF0000');
+	                   	}
+	                   	else if (num < 60){
+	                   		$('#wardNumbers').css('color', '#F2F200');
+	                   	}
+	                   	else if (num < 80){
+	                   		$('#wardNumbers').css('color', '#8EED00');
+	                   	}
+	                   	else{
+	                   		$('#wardNumbers').css('color', '#004F30');
+	                   	}
+
 	                   $( "#summonerName" ).slideDown( "slow", function() {
+	                   		$('#rows' + data[0].replace(/\s+/g, '').toLowerCase()).addClass('highlight').siblings().removeClass('highlight');
 						  });
 	                   $( ".smallWords" ).slideDown( "slow", function() {
 						  });
 	                   $( "#wardNumbers" ).slideDown( "slow", function() {
 
 						});
-						$('#summonerInfo').addClass('highlight').siblings();
+						
 
 	               	},
 	               error: function(err){
@@ -121,7 +136,7 @@ Filter by summoner name:<input ng-model="names">
 	</tr>
 </table>
 <table id = "summonerInfo">
-	<tr class = "content" ng-repeat="summoner in summoners | filter:names | orderBy:predicate:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
+	<tr class = "content"  id="rows{{summoner.lowercase}}" ng-repeat="summoner in summoners | filter:names | orderBy:predicate:reverse" ng-class-odd="'odd'" ng-class-even="'even'">
 		<td><a ng-href="http://www.lolking.net/summoner/na/{{summoner.ID}}">{{summoner.name}}</a></td>
 		<td>{{summoner.wards}}</td>
 		<td>{{summoner.sightWardsBought}}</td>

@@ -3,10 +3,10 @@ var db = require('./database.js')
 
 function getOutput(name){ return function(callback2, err2){
 		var apikey= "ebacf303-2d6a-4cda-b132-260e8155f0bc"
-		lowerName = name.replace(/\s+/g, '');
-		console.log(lowerName)		
+		lowerName = name.replace(/\s+/g, '').toLowerCase();
+		console.log(lowerName);
 		
-		Summoner.find({lowercase: lowerName.toLowerCase()}, function (err, summonerID) {				        	
+		Summoner.find({lowercase: lowerName}, function (err, summonerID) {			
 			if (err) return console.error(err);
 			if (!summonerID.length){
 				var url = 'http://prod.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name.toLowerCase() + "?api_key=" + apikey;		
@@ -19,8 +19,8 @@ function getOutput(name){ return function(callback2, err2){
 				    	try{
 				       		var summonerInfo = JSON.parse(body);
 				       		console.log(summonerInfo);
-				       		var summoner_id = summonerInfo[lowerName.toLowerCase()]['id'];
-				        	name = summonerInfo[lowerName.toLowerCase()]['name'];
+				       		var summoner_id = summonerInfo[lowerName]['id'];
+				        	name = summonerInfo[lowerName]['name'];
 
 				    	}
 				        catch (e){
@@ -37,7 +37,7 @@ function getOutput(name){ return function(callback2, err2){
 							}
 							return false
 						}
-						getWards(summoner_id,name,apikey)(
+						getWards(summoner_id,name,lowerName,apikey)(
 							function(callback3){
 								callback2(callback3)
 							},
@@ -53,7 +53,7 @@ function getOutput(name){ return function(callback2, err2){
 			else{
 				name = summonerID[0]['name']
 				summoner_id = summonerID[0]['ID']
-				getWards(summoner_id,name,apikey)(
+				getWards(summoner_id,name,lowerName,apikey)(
 					function(callback3){
 						callback2(callback3)
 					},
@@ -65,7 +65,7 @@ function getOutput(name){ return function(callback2, err2){
 	})
 }}
 
-function getWards(summoner_id,name,apikey){ return function(callback3, err3){
+function getWards(summoner_id,name,lowerName,apikey){ return function(callback3, err3){
 	var url = "http://prod.api.pvp.net/api/lol/na/v1.3/game/by-summoner/" + summoner_id + "/recent?api_key=" + apikey
 	try{
 		http.get(url, function(res) {
@@ -121,8 +121,8 @@ function getWards(summoner_id,name,apikey){ return function(callback3, err3){
 					}
 				}
 				console.log(wards)
-				var summoners = new Summoner({ name: name, ID: summoner_id, lowercase: name.toLowerCase(), wards: wards, sightWardsBought: sightWardsBought, show: true});
-				Summoner.find({lowercase: name.toLowerCase()}, function (err, summoner) {
+				var summoners = new Summoner({ name: name, ID: summoner_id, lowercase: lowerName, wards: wards, sightWardsBought: sightWardsBought, show: true});
+				Summoner.find({lowercase: lowerName}, function (err, summoner) {
 					if (err) return console.error(err);
 					if (!summoner.length){
 						summoners.save(function (err, summoner) {
@@ -130,7 +130,7 @@ function getWards(summoner_id,name,apikey){ return function(callback3, err3){
 						});
 					}
 					else{
-						Summoner.update({lowercase: name.toLowerCase()}, { wards: wards, sightWardsBought: sightWardsBought, show: true}, function (err, summoner) {
+						Summoner.update({lowercase: lowerName}, { wards: wards, sightWardsBought: sightWardsBought, show: true}, function (err, summoner) {
 							console.log("SUCCESSUPDATE");
 						});
 					}

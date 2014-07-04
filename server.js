@@ -27,7 +27,7 @@ app.get('/', function(req,res) {
 });
 
 app.get('/clearDB', function(req,res) {
-	Summoner.update({show: true}, { show: false}, function (err, summoner) {
+	Summoner.update({show: true}, {show: false}, function (err, summoner) {
 		console.log("DBCleared");
 	});
 	res.redirect('/');
@@ -66,7 +66,7 @@ app.post('/request', function(req, res) {
 			    html: ipAddr + " requested for Summoner: " + summonerName // html body
 			}
 			
-			
+			/*
 			smtpTransport.sendMail(mailOptions, function(error, response){
 			    if(error){
 			        console.log(error);
@@ -74,7 +74,7 @@ app.post('/request', function(req, res) {
 			        console.log("Message sent: " + response.message);
 			    }
 			});
-			
+			*/
 			
 		},
 		function (err){
