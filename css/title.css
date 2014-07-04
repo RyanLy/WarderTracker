@@ -83,14 +83,12 @@ th,td
      background-color: #F29A4D;
 }
 
-
-}
 .odd{
-	background-color: #E2E0E0
+	background-color: #E2E0E0;
 }
 
 .even{
-	background-color: #FFF
+	background-color: #FFF;
 }
 
 .highlight{
@@ -99,17 +97,16 @@ th,td
 
 
 #summonerName{
-	color:#000;
-	font-size:4.5em;
-	margin-left:35%;
-	text-align: center;
+	color:#F29A4D;
+	font-size:5em;
+
 	display:none;
 }
 
-#wardName{
-	font-size:2em;
+.smallWords{
+	font-size:2.5em;
 	color:#000;
-	margin-left:45%;
+
 	display:none;
 
 }
@@ -123,7 +120,7 @@ th,td
 
 #wardNumbers{
 	font-size:6em;
-	color:#000;
+	color:#004F30;
 	display:none;
 
 }
@@ -133,3 +130,9 @@ th,td
 	color:#000;
 }
 
+#output{
+	margin-top:3%;
+	text-align:center;
+	margin-bottom:3%;
+	display:none;
+}

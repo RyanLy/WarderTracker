@@ -27,8 +27,8 @@ app.get('/', function(req,res) {
 });
 
 app.get('/clearDB', function(req,res) {
-	Summoner.update({show: true}, {show: false}, function (err, summoner) {
-		console.log("DBCLEARED");
+	Summoner.update({show: true}, { show: false}, function (err, summoner) {
+		console.log("DBCleared");
 	});
 	res.redirect('/');
 });

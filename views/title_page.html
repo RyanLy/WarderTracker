@@ -9,7 +9,8 @@
 <script src="angular.js"></script>
 <script src="controllers.js"></script>
 
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <script type="text/javascript">
 
 	$(document).ready(function(){
@@ -23,25 +24,31 @@
 	               type: "POST",
 	               url: action,
 	               success: function( data ){
+	               		$('#output').show()
 	                   $('#summonerName').hide()
-	                   $('#wardName').hide()
+	                   $('.smallWords').hide()
 	                   $('#wardNumbers').hide()
+					   $('html, body').animate({
+	                        scrollTop: $("#output").offset().top
+	                    }, 550);
 	                   d = document.getElementById('summonerInfo');
 	                   scope = angular.element(d).scope();
 	                   scope.$apply(function() {
 					        scope.getData();
 					    });
-	                   $('#summonerName').text(data[0])
-	                   $('#wardNumbers').text(data[1])
+	                   	$('#summonerName').text(data[0])
+	                   	$('#wardNumbers').text(data[1])
+
 	                   $( "#summonerName" ).slideDown( "slow", function() {
 						  });
-	                   $( "#wardName" ).slideDown( "slow", function() {
+	                   $( ".smallWords" ).slideDown( "slow", function() {
 						  });
 	                   $( "#wardNumbers" ).slideDown( "slow", function() {
-						    $('html,body').animate({scrollTop: $(document).height() + "px"});
-						  });
 
-	               },
+						});
+						$('#summonerInfo').addClass('highlight').siblings();
+
+	               	},
 	               error: function(err){
 	                alert(err.responseText);
 	               }
@@ -93,12 +100,12 @@ function resizeText() {
 	<img id = "background" class="resize" src ="./jaycedraven.png">
 </div>
 
-<div id = "output">
+<div id = "output" title="Results">
 
-<a id = "summonerName"> Windask </a>
-<br>
-<a id = "wardName"> Wards: </a>
-<a id = "wardNumbers"> 120 </a>
+<a id = "summonerName"></a>
+<a class = "smallWords"> placed </a>
+<a id = "wardNumbers"></a>
+<a class = "smallWords"> wards in the last 10 games. </a>
 
 </div>
 
