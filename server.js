@@ -1,16 +1,14 @@
 var express = require('express');
 var app  = express();
-var server = require('http').createServer(app);
 var path = require('path');
-var http = require('http');
 
 var getOutput = require('./js/wardInformationScrapper') //provides dict of names
 var smtpTransport = require("./js/mailer");
-var db = require('./js/database')
+var db = require('./models/database')
 
+app.set('views',__dirname+'/public/views');
 app.use(express.static(path.join(__dirname, '/public')));
-app.use(express.static('./css'));
-app.use(express.static('./js'));
+
 app.set('view engine', 'html');
 
 app.engine('.html', require('ejs').__express);
@@ -23,7 +21,7 @@ app.get('/summoners.json', function(req, res) {
 });
 
 app.get('/', function(req,res) {
-	res.render('title_page');
+	res.render('index');
 });
 
 app.get('/clearDB', function(req,res) {
@@ -37,14 +35,13 @@ app.get('/clearDB', function(req,res) {
 app.post('/request', function(req, res) {
 	summonerName = req.param('name');
 	console.log(summonerName);
-
 	var ipAddr = req.headers["x-forwarded-for"];
 	if (ipAddr){
 	    var list = ipAddr.split(",");
 	    ipAddr = list[list.length-1];
-	  } else {
+	} else {
 	    ipAddr = req.connection.remoteAddress;
-	  }
+	}
 
 	var date = new Date();
 	console.log(date)
@@ -66,7 +63,7 @@ app.post('/request', function(req, res) {
 			    html: ipAddr + " requested for Summoner: " + summonerName // html body
 			}
 			
-			
+
 			smtpTransport.sendMail(mailOptions, function(error, response){
 			    if(error){
 			        console.log(error);
@@ -74,7 +71,7 @@ app.post('/request', function(req, res) {
 			        console.log("Message sent: " + response.message);
 			    }
 			});
-			
+
 			
 		},
 		function (err){

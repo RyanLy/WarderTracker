@@ -1,5 +1,5 @@
 var http = require('http');
-var db = require('./database.js')
+var db = require('./../models/database.js')
 
 function getOutput(name){ return function(callback2, err2){
 		var apikey= "ebacf303-2d6a-4cda-b132-260e8155f0bc"
