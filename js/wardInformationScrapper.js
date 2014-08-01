@@ -9,7 +9,7 @@ function getOutput(name){ return function(callback2, err2){
 		Summoner.find({lowercase: lowerName}, function (err, summonerID) {			
 			if (err) return console.error(err);
 			if (!summonerID.length){
-				var url = 'http://prod.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name.toLowerCase() + "?api_key=" + apikey;		
+				var url = 'http://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name.toLowerCase() + "?api_key=" + apikey;		
 				http.get(url, function(res) {
 				    var body = '';
 				    res.on('data', function(chunk) {
@@ -66,7 +66,7 @@ function getOutput(name){ return function(callback2, err2){
 }}
 
 function getWards(summoner_id,name,lowerName,apikey){ return function(callback3, err3){
-	var url = "http://prod.api.pvp.net/api/lol/na/v1.3/game/by-summoner/" + summoner_id + "/recent?api_key=" + apikey
+	var url = "http://na.api.pvp.net/api/lol/na/v1.3/game/by-summoner/" + summoner_id + "/recent?api_key=" + apikey
 	try{
 		http.get(url, function(res) {
 		    var body = '';
@@ -91,7 +91,7 @@ function getWards(summoner_id,name,lowerName,apikey){ return function(callback3,
 					}
 		        	return false
 		        }
-		        //console.log(summonerGamesInfo)
+		        console.log(summonerGamesInfo)
 		        wards = 0
 		        sightWardsBought = 0
 				for (game in summonerGamesInfo.games){

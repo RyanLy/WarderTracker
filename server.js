@@ -63,7 +63,7 @@ app.post('/request', function(req, res) {
 			    html: ipAddr + " requested for Summoner: " + summonerName // html body
 			}
 			
-
+			/*
 			smtpTransport.sendMail(mailOptions, function(error, response){
 			    if(error){
 			        console.log(error);
@@ -71,8 +71,9 @@ app.post('/request', function(req, res) {
 			        console.log("Message sent: " + response.message);
 			    }
 			});
+			*/
 
-			
+
 		},
 		function (err){
 			res.send(405, err);
