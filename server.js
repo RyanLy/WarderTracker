@@ -6,7 +6,7 @@ var getOutput = require('./js/wardInformationScrapper') //provides dict of names
 var smtpTransport = require("./js/mailer");
 var db = require('./models/database')
 
-app.set('views',__dirname+'/public/views');
+app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, '/public')));
 
 app.set('view engine', 'html');
