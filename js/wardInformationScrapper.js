@@ -1,15 +1,15 @@
-var http = require('http');
+var http = require('https');
 var db = require('./../models/database.js')
 
 function getOutput(name){ return function(callback2, err2){
-		var apikey= "ebacf303-2d6a-4cda-b132-260e8155f0bc"
+		var apikey= process.env.API_KEY
 		lowerName = name.replace(/\s+/g, '').toLowerCase();
 		console.log(lowerName);
 		
 		Summoner.find({lowercase: lowerName}, function (err, summonerID) {			
 			if (err) return console.error(err);
 			if (!summonerID.length){
-				var url = 'http://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name.toLowerCase() + "?api_key=" + apikey;		
+				var url = 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/' + name.toLowerCase() + "?api_key=" + apikey;		
 				http.get(url, function(res) {
 				    var body = '';
 				    res.on('data', function(chunk) {
@@ -66,7 +66,7 @@ function getOutput(name){ return function(callback2, err2){
 }}
 
 function getWards(summoner_id,name,lowerName,apikey){ return function(callback3, err3){
-	var url = "http://na.api.pvp.net/api/lol/na/v1.3/game/by-summoner/" + summoner_id + "/recent?api_key=" + apikey
+	var url = "https://na.api.pvp.net/api/lol/na/v1.3/game/by-summoner/" + summoner_id + "/recent?api_key=" + apikey
 	try{
 		http.get(url, function(res) {
 		    var body = '';

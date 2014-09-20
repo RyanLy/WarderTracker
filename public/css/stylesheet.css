@@ -150,5 +150,17 @@ th,td
 	margin-top:3%;
 	text-align:center;
 	margin-bottom:3%;
-	display:none;
+	display:none;	
+}
+
+#container {
+   min-height:100%;
+   position:relative;
+}
+
+#footer {
+   position:absolute;
+   bottom:0;
+   font-size:0.8em;
+   width:100%;
 }

@@ -5,7 +5,7 @@ import json
 names = ['Windask', 'LightBrite','Khey','xBiscuits','Kottonbun','DragonSlayer965','aePheva']
 
 #API supports up to 40 summoner GETs at a time. Maybe consider doing this to have less API requests
-def get_ward_count(name,apikey = "ebacf303-2d6a-4cda-b132-260e8155f0bc"):
+def get_ward_count(name,apikey = ""): #Enter your api key
 	summoner_name = name
 	url_summoner = "https://prod.api.pvp.net/api/lol/na/v1.4/summoner/by-name/" + summoner_name + "?api_key=" + apikey
 	http = httplib2.Http()
