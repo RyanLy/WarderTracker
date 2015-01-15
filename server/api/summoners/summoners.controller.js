@@ -13,6 +13,13 @@ exports.index = function(req, res) {
   })
 };
 
+exports.clear = function(req, res){
+  Summoner.update({show: true}, {show:false}, { multi: true }, function (err, summoner) {
+    console.log("DBCleared");
+  });
+  res.redirect('/');
+}
+
 exports.getInfo = function(req, res) {
   var summonerName = req.param('name');
   console.log(summonerName);
