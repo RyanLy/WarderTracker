@@ -1,0 +1,43 @@
+<div class="container-full">
+	<img class = "logo responsive" src ="./assets/images/logo.png">
+	<div class="backgrounds responsive">
+	<div class="hidden-xs">
+		<form ng-submit="submit()">
+			<input ng-model="query" id = "inputBox" class="font-size-4" maxlength="16" placeholder="type in a summoner name" type = "text" name="name" autocomplete="off">
+		</form>
+		<img class = "background responsive" class="resize" src="/assets/images/jaycedraven.png">
+	</div>
+	<div class="visible-xs container">
+			<form ng-submit="submit()" class="smallbox">
+				<input ng-model="query" class="font-size-4" maxlength="16" placeholder="type in a summoner name" type = "text" name="name" autocomplete="off">
+				<br>
+				<input type="button" ng-click="submit()" value="Submit">
+			</form>
+	</div>
+
+	<div ng-show="show" id = "output" class = "slide">
+		<span class="summonerName font-size-1" >{{ summoner }}</span>
+		<span class = "smallWords font-size-3"> placed </span>
+		<span class = "wardNumbers font-size-1">{{ wardCount }}</span>
+		<span class = "smallWords font-size-3"> wards in the last 10 games. </span>
+	</div>
+	<br><br>
+	Filter by summoner name: <input ng-model="names">
+	<br><br>
+	<table>
+		<tr>
+			<td><a href="" ng-click="predicate = 'name'; reverse=!reverse">Summoner Name</a></td>
+			<td><a href="" ng-click="predicate = 'wards'; reverse=!reverse">Wards</a></td>
+			<td><a href="" ng-click="predicate = 'sightWardsBought'; reverse=!reverse">Sight Wards</a></td>
+		</tr>
+	</table>
+	<table id = "summonerInfo">
+		<tr class = "content" ng-click="applyHighlight(summoner.lowercase)" ng-class="{'highlight': current == summoner.lowercase}" ng-repeat="summoner in summoners | filter:names | orderBy:predicate:reverse" ng-class-odd="'odd'" ng-class-even="'even'" >
+			<td><a ng-href="http://www.lolking.net/summoner/na/{{summoner.ID}}">{{summoner.name}}</a></td>
+			<td>{{summoner.wards}}</td>
+			<td>{{summoner.sightWardsBought}}</td>
+		</tr>
+	</table>
+	<br>
+	<br>
+</div>

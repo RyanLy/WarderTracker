@@ -1,0 +1,278 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'nodemailer',
+1 verbose cli   '0.7.1',
+1 verbose cli   '--save' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.33
+4 verbose node symlink C:\Program Files\nodejs\\node.exe
+5 verbose readDependencies using package.json deps
+6 verbose cache add [ 'nodemailer@^1.3.0', null ]
+7 verbose cache add name=undefined spec="nodemailer@^1.3.0" args=["nodemailer@^1.3.0",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: 'nodemailer@^1.3.0',
+8 verbose parsed url   path: 'nodemailer@^1.3.0',
+8 verbose parsed url   href: 'nodemailer@^1.3.0' }
+9 verbose cache add [ '0.7.1', null ]
+10 verbose cache add name=undefined spec="0.7.1" args=["0.7.1",null]
+11 verbose parsed url { protocol: null,
+11 verbose parsed url   slashes: null,
+11 verbose parsed url   auth: null,
+11 verbose parsed url   host: null,
+11 verbose parsed url   port: null,
+11 verbose parsed url   hostname: null,
+11 verbose parsed url   hash: null,
+11 verbose parsed url   search: null,
+11 verbose parsed url   query: null,
+11 verbose parsed url   pathname: '0.7.1',
+11 verbose parsed url   path: '0.7.1',
+11 verbose parsed url   href: '0.7.1' }
+12 verbose cache add name="nodemailer" spec="^1.3.0" args=["nodemailer","^1.3.0"]
+13 verbose parsed url { protocol: null,
+13 verbose parsed url   slashes: null,
+13 verbose parsed url   auth: null,
+13 verbose parsed url   host: null,
+13 verbose parsed url   port: null,
+13 verbose parsed url   hostname: null,
+13 verbose parsed url   hash: null,
+13 verbose parsed url   search: null,
+13 verbose parsed url   query: null,
+13 verbose parsed url   pathname: '^1.3.0',
+13 verbose parsed url   path: '^1.3.0',
+13 verbose parsed url   href: '^1.3.0' }
+14 verbose addNamed [ 'nodemailer', '^1.3.0' ]
+15 verbose addNamed [ null, '>=1.3.0-0 <2.0.0-0' ]
+16 silly lockFile ad9d3bdb-nodemailer-1-3-0 nodemailer@^1.3.0
+17 verbose lock nodemailer@^1.3.0 C:\Users\Ryan\AppData\Roaming\npm-cache\ad9d3bdb-nodemailer-1-3-0.lock
+18 silly lockFile 7fc24409-0-7-1 0.7.1
+19 verbose lock 0.7.1 C:\Users\Ryan\AppData\Roaming\npm-cache\7fc24409-0-7-1.lock
+20 silly addNameRange { name: 'nodemailer',
+20 silly addNameRange   range: '>=1.3.0-0 <2.0.0-0',
+20 silly addNameRange   hasData: false }
+21 silly lockFile 7fc24409-0-7-1 0.7.1
+22 silly lockFile 7fc24409-0-7-1 0.7.1
+23 verbose request where is /nodemailer
+24 verbose request registry https://registry.npmjs.org/
+25 verbose request id 54ce460f3213c917
+26 verbose url raw /nodemailer
+27 verbose url resolving [ 'https://registry.npmjs.org/', './nodemailer' ]
+28 verbose url resolved https://registry.npmjs.org/nodemailer
+29 verbose request where is https://registry.npmjs.org/nodemailer
+30 info trying registry request attempt 1 at 22:08:51
+31 verbose etag "6XIN37O6FKL9765LDDF1LEPTL"
+32 http GET https://registry.npmjs.org/nodemailer
+33 verbose addNamed [ '0.7.1', '' ]
+34 verbose addNamed [ null, '*' ]
+35 silly lockFile c2da838d-0-7-1 0.7.1@
+36 verbose lock 0.7.1@ C:\Users\Ryan\AppData\Roaming\npm-cache\c2da838d-0-7-1.lock
+37 silly addNameRange { name: '0.7.1', range: '*', hasData: false }
+38 verbose request where is /0.7.1
+39 verbose request registry https://registry.npmjs.org/
+40 verbose url raw /0.7.1
+41 verbose url resolving [ 'https://registry.npmjs.org/', './0.7.1' ]
+42 verbose url resolved https://registry.npmjs.org/0.7.1
+43 verbose request where is https://registry.npmjs.org/0.7.1
+44 info trying registry request attempt 1 at 22:08:51
+45 http GET https://registry.npmjs.org/0.7.1
+46 http 304 https://registry.npmjs.org/nodemailer
+47 silly registry.get cb [ 304,
+47 silly registry.get   { date: 'Thu, 15 Jan 2015 03:08:51 GMT',
+47 silly registry.get     server: 'Apache',
+47 silly registry.get     via: '1.1 varnish',
+47 silly registry.get     'last-modified': 'Thu, 15 Jan 2015 03:08:51 GMT',
+47 silly registry.get     'cache-control': 'max-age=60',
+47 silly registry.get     etag: '"6XIN37O6FKL9765LDDF1LEPTL"',
+47 silly registry.get     age: '8',
+47 silly registry.get     'x-served-by': 'cache-iad2144-IAD',
+47 silly registry.get     'x-cache': 'HIT',
+47 silly registry.get     'x-cache-hits': '1',
+47 silly registry.get     'x-timer': 'S1421291331.975179,VS0,VE0',
+47 silly registry.get     vary: 'Accept',
+47 silly registry.get     'content-length': '0',
+47 silly registry.get     'keep-alive': 'timeout=10, max=50',
+47 silly registry.get     connection: 'Keep-Alive' } ]
+48 verbose etag https://registry.npmjs.org/nodemailer from cache
+49 silly addNameRange number 2 { name: 'nodemailer',
+49 silly addNameRange   range: '>=1.3.0-0 <2.0.0-0',
+49 silly addNameRange   hasData: true }
+50 silly addNameRange versions [ 'nodemailer',
+50 silly addNameRange   [ '0.1.1',
+50 silly addNameRange     '0.1.2',
+50 silly addNameRange     '0.1.3',
+50 silly addNameRange     '0.1.4',
+50 silly addNameRange     '0.1.5',
+50 silly addNameRange     '0.1.6',
+50 silly addNameRange     '0.1.7',
+50 silly addNameRange     '0.1.8',
+50 silly addNameRange     '0.1.9',
+50 silly addNameRange     '0.1.10',
+50 silly addNameRange     '0.1.11',
+50 silly addNameRange     '0.1.12',
+50 silly addNameRange     '0.1.13',
+50 silly addNameRange     '0.1.14',
+50 silly addNameRange     '0.1.15',
+50 silly addNameRange     '0.1.16',
+50 silly addNameRange     '0.1.17',
+50 silly addNameRange     '0.1.18',
+50 silly addNameRange     '0.1.19',
+50 silly addNameRange     '0.1.20',
+50 silly addNameRange     '0.1.21',
+50 silly addNameRange     '0.1.22',
+50 silly addNameRange     '0.1.23',
+50 silly addNameRange     '0.1.24',
+50 silly addNameRange     '0.2.0',
+50 silly addNameRange     '0.2.1',
+50 silly addNameRange     '0.2.2',
+50 silly addNameRange     '0.2.3',
+50 silly addNameRange     '0.2.4',
+50 silly addNameRange     '0.3.0',
+50 silly addNameRange     '0.3.1',
+50 silly addNameRange     '0.3.2',
+50 silly addNameRange     '0.3.3',
+50 silly addNameRange     '0.3.4',
+50 silly addNameRange     '0.3.5',
+50 silly addNameRange     '0.3.6',
+50 silly addNameRange     '0.3.7',
+50 silly addNameRange     '0.3.8',
+50 silly addNameRange     '0.3.9',
+50 silly addNameRange     '0.3.10',
+50 silly addNameRange     '0.3.11',
+50 silly addNameRange     '0.3.12',
+50 silly addNameRange     '0.3.13',
+50 silly addNameRange     '0.3.14',
+50 silly addNameRange     '0.3.15',
+50 silly addNameRange     '0.3.16',
+50 silly addNameRange     '0.3.17',
+50 silly addNameRange     '0.3.18',
+50 silly addNameRange     '0.3.19',
+50 silly addNameRange     '0.3.20',
+50 silly addNameRange     '0.3.21',
+50 silly addNameRange     '0.3.22',
+50 silly addNameRange     '0.3.23',
+50 silly addNameRange     '0.3.24',
+50 silly addNameRange     '0.3.25',
+50 silly addNameRange     '0.3.26',
+50 silly addNameRange     '0.3.27',
+50 silly addNameRange     '0.3.28',
+50 silly addNameRange     '0.3.29',
+50 silly addNameRange     '0.3.30',
+50 silly addNameRange     '0.3.31',
+50 silly addNameRange     '0.3.32',
+50 silly addNameRange     '0.3.33',
+50 silly addNameRange     '0.3.34',
+50 silly addNameRange     '0.3.35',
+50 silly addNameRange     '0.3.37',
+50 silly addNameRange     '0.3.38',
+50 silly addNameRange     '0.3.39',
+50 silly addNameRange     '0.3.40',
+50 silly addNameRange     '0.3.41',
+50 silly addNameRange     '0.3.42',
+50 silly addNameRange     '0.3.43',
+50 silly addNameRange     '0.3.44',
+50 silly addNameRange     '0.4.0',
+50 silly addNameRange     '0.4.1',
+50 silly addNameRange     '0.4.2',
+50 silly addNameRange     '0.4.3',
+50 silly addNameRange     '0.4.4',
+50 silly addNameRange     '0.5.0',
+50 silly addNameRange     '0.5.1',
+50 silly addNameRange     '0.5.2',
+50 silly addNameRange     '0.5.3',
+50 silly addNameRange     '0.5.4',
+50 silly addNameRange     '0.5.5',
+50 silly addNameRange     '0.5.6',
+50 silly addNameRange     '0.5.7',
+50 silly addNameRange     '0.5.8',
+50 silly addNameRange     '0.5.9',
+50 silly addNameRange     '0.5.10',
+50 silly addNameRange     '0.5.11',
+50 silly addNameRange     '0.5.12',
+50 silly addNameRange     '0.5.13',
+50 silly addNameRange     '0.5.14',
+50 silly addNameRange     '0.5.15',
+50 silly addNameRange     '0.6.0',
+50 silly addNameRange     '0.6.1',
+50 silly addNameRange     '0.6.2',
+50 silly addNameRange     '0.6.3',
+50 silly addNameRange     '0.6.4',
+50 silly addNameRange     '0.6.5',
+50 silly addNameRange     '0.7.0',
+50 silly addNameRange     '0.7.1',
+50 silly addNameRange     '1.0.0-rc.1',
+50 silly addNameRange     '1.0.0',
+50 silly addNameRange     '1.0.1',
+50 silly addNameRange     '1.0.2',
+50 silly addNameRange     '1.0.3',
+50 silly addNameRange     '1.0.4',
+50 silly addNameRange     '1.1.0',
+50 silly addNameRange     '1.1.1',
+50 silly addNameRange     '1.1.2',
+50 silly addNameRange     '1.2.0',
+50 silly addNameRange     '1.2.1',
+50 silly addNameRange     '1.2.2',
+50 silly addNameRange     '1.3.0' ] ]
+51 verbose addNamed [ 'nodemailer', '1.3.0' ]
+52 verbose addNamed [ '1.3.0', '1.3.0' ]
+53 silly lockFile a85db291-nodemailer-1-3-0 nodemailer@1.3.0
+54 verbose lock nodemailer@1.3.0 C:\Users\Ryan\AppData\Roaming\npm-cache\a85db291-nodemailer-1-3-0.lock
+55 silly lockFile a85db291-nodemailer-1-3-0 nodemailer@1.3.0
+56 silly lockFile a85db291-nodemailer-1-3-0 nodemailer@1.3.0
+57 silly lockFile ad9d3bdb-nodemailer-1-3-0 nodemailer@^1.3.0
+58 silly lockFile ad9d3bdb-nodemailer-1-3-0 nodemailer@^1.3.0
+59 http 404 https://registry.npmjs.org/0.7.1
+60 verbose headers { date: 'Thu, 15 Jan 2015 03:08:52 GMT',
+60 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+60 verbose headers   'content-type': 'application/json',
+60 verbose headers   'cache-control': 'max-age=0',
+60 verbose headers   'content-length': '52',
+60 verbose headers   'accept-ranges': 'bytes',
+60 verbose headers   via: '1.1 varnish',
+60 verbose headers   age: '0',
+60 verbose headers   'x-served-by': 'cache-iad2146-IAD',
+60 verbose headers   'x-cache': 'MISS',
+60 verbose headers   'x-cache-hits': '0',
+60 verbose headers   'x-timer': 'S1421291331.977090,VS0,VE353',
+60 verbose headers   'keep-alive': 'timeout=10, max=50',
+60 verbose headers   connection: 'Keep-Alive' }
+61 silly registry.get cb [ 404,
+61 silly registry.get   { date: 'Thu, 15 Jan 2015 03:08:52 GMT',
+61 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+61 silly registry.get     'content-type': 'application/json',
+61 silly registry.get     'cache-control': 'max-age=0',
+61 silly registry.get     'content-length': '52',
+61 silly registry.get     'accept-ranges': 'bytes',
+61 silly registry.get     via: '1.1 varnish',
+61 silly registry.get     age: '0',
+61 silly registry.get     'x-served-by': 'cache-iad2146-IAD',
+61 silly registry.get     'x-cache': 'MISS',
+61 silly registry.get     'x-cache-hits': '0',
+61 silly registry.get     'x-timer': 'S1421291331.977090,VS0,VE353',
+61 silly registry.get     'keep-alive': 'timeout=10, max=50',
+61 silly registry.get     connection: 'Keep-Alive' } ]
+62 silly lockFile c2da838d-0-7-1 0.7.1@
+63 silly lockFile c2da838d-0-7-1 0.7.1@
+64 error 404 404 Not Found: 0.7.1
+64 error 404
+64 error 404 '0.7.1' is not in the npm registry.
+64 error 404 You should bug the author to publish it
+64 error 404 It was specified as a dependency of 'ward-tracker'
+64 error 404
+64 error 404 Note that you can also install from a
+64 error 404 tarball, folder, or http url, or git url.
+65 error System Windows_NT 6.2.9200
+66 error command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "nodemailer" "0.7.1" "--save"
+67 error cwd C:\Users\Ryan\Desktop\WardTracker2
+68 error node -v v0.10.33
+69 error npm -v 1.4.28
+70 error code E404
+71 verbose exit [ 1, true ]
